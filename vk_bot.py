@@ -48,6 +48,6 @@ class VkBot:
                     result += i
             else:
                 if i == ">":
-                    not_skip = True
+                    not_skip = True 
 
         return result
