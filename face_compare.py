@@ -8,14 +8,15 @@ def face_compare_func(img1, img2):
     unknown_face_encoding = face_recognition.face_encodings(unknown_picture)[0]
     results = face_recognition.compare_faces([face], unknown_face_encoding)
     if results[0] == True:
+        print("https://vk.com/id"+img2[52:-4])
         return True
     else:
         return False
+    
 
 def open_files(img):
     for filename in sorted(glob.glob('/home/maska/Documents/hakaton_fbr/registered_photos/' + '*.jpg')):
         filename = filename
-        print(filename)
-        #print(face_compare_func(filename, img))
+        print(face_compare_func(filename, img))
 
 print(open_files("/home/maska/Documents/hakaton_fbr/registered_photos/11111.jpg"))
