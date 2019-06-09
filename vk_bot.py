@@ -27,19 +27,25 @@ class VkBot:
         elif message.upper() == self._COMMANDS[1]:
             try:
                 download_image_func(event.attachments['attach1'])
-            except:
-                return {"text": "Проблема с фотографией", "keyboard": None}
-            finally:
                 return {"text": "Спасибо)", "keyboard": None}
+            except KeyError:
+                return {"text": "Нет фотографии", "keyboard": None}
+            except ValueError:
+                return {"text": "Не могу получить доступ к фотографии", "keyboard": None}
+            except IndexError:
+                return {"text": "Не могу найти лицо на фотографии", "keyboard": None}
 
         elif message.upper() == self._COMMANDS[2]:
             try:
                 file = download_image_func_1(event.attachments['attach1'])
                 url = open_files(file)
-            except:
-                return {"text": "Проблема с фотографией", "keyboard": None}
-            finally:
                 return {"text":'Мне кажется, это {}'.format(url), "keyboard": None}
+            except KeyError:
+                return {"text": "Нет фотографии", "keyboard": None}
+            except ValueError:
+                return {"text": "Не могу получить доступ к фотографии", "keyboard": None}
+            except IndexError:
+                return {"text": "Не могу найти лицо на фотографии", "keyboard": None}
 
         else:
             return {"text": "??????", "keyboard": None}
