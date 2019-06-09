@@ -30,8 +30,8 @@ class VkBot:
 
         elif message.upper() == self._COMMANDS[2]:
             file = download_image_func_1(event.attachments['attach1'])
-            open_files(file)
-            return {"text": "Send somebodies photo", "keyboard": None}
+            url = open_files(file)
+            return {"text":' {}'.format(url), "keyboard": None}
 
         else:
             return {"text": "??????", "keyboard": None}
@@ -48,6 +48,6 @@ class VkBot:
                     result += i
             else:
                 if i == ">":
-                    not_skip = True 
+                    not_skip = True
 
         return result
