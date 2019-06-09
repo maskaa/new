@@ -10,7 +10,7 @@ class VkBot:
         print("Bot created")
         self._USER_ID = user_id
         self._USERNAME = self._get_user_name_from_vk_id(user_id)
-        self._COMMANDS = ["HELLO", "UPLOAD PHOTO", "FIND SOMEONE"]
+        self._COMMANDS = ["ПРИВЕТ", "РЕГИСТРАЦИЯ", "НАЙТИ ЧЕЛОВЕКА"]
 
     def _get_user_name_from_vk_id(self, user_id):
         request = requests.get("https://vk.com/id"+str(user_id))
@@ -22,16 +22,24 @@ class VkBot:
         message = event.text
         
         if message.upper() == self._COMMANDS[0]:
-            return {"text": f"Hello, {self._USERNAME}! Me commands: 'UPLOAD PHOTO', 'FIND SOMEONE'", "keyboard": None}
+            return {"text": f"Привет, {self._USERNAME}! Мои команды: 'Регистрация', 'Найти человека'", "keyboard": None}
 
         elif message.upper() == self._COMMANDS[1]:
-            download_image_func(event.attachments['attach1'])
-            return {"text": "Send me your photo", "keyboard": None}
+            try:
+                download_image_func(event.attachments['attach1'])
+            except:
+                return {"text": "Проблема с фотографией", "keyboard": None}
+            finally:
+                return {"text": "Спасибо)", "keyboard": None}
 
         elif message.upper() == self._COMMANDS[2]:
-            file = download_image_func_1(event.attachments['attach1'])
-            url = open_files(file)
-            return {"text":' {}'.format(url), "keyboard": None}
+            try:
+                file = download_image_func_1(event.attachments['attach1'])
+                url = open_files(file)
+            except:
+                return {"text": "Проблема с фотографией", "keyboard": None}
+            finally:
+                return {"text":'Мне кажется, это {}'.format(url), "keyboard": None}
 
         else:
             return {"text": "??????", "keyboard": None}
