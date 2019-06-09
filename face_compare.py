@@ -12,3 +12,4 @@ def open_files(img):
         results = face_recognition.compare_faces([face], unknown_face_encoding)
         if results[0] == True:
             return ("https://vk.com/id"+filename[52:-4])
+        
