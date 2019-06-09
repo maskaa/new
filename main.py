@@ -22,3 +22,4 @@ for event in longpoll.listen():
             bot = VkBot(event.user_id)
 
             write_msg(event.user_id, bot.new_message(event))
+            
