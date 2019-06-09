@@ -10,7 +10,7 @@ class VkBot:
         print("Bot created")
         self._USER_ID = user_id
         self._USERNAME = self._get_user_name_from_vk_id(user_id)
-        self._COMMANDS = ["ПРИВЕТ", "РЕГИСТРАЦИЯ", "НАЙТИ ЧЕЛОВЕКА"]
+        self._COMMANDS = ["ПРИВЕТ", "РЕГИСТРАЦИЯ", "НАЙТИ ЧЕЛОВЕКА", "СПРАВКА"]
 
     def _get_user_name_from_vk_id(self, user_id):
         request = requests.get("https://vk.com/id"+str(user_id))
@@ -22,33 +22,39 @@ class VkBot:
         message = event.text
         
         if message.upper() == self._COMMANDS[0]:
-            return {"text": f"Привет, {self._USERNAME}! Мои команды: 'Регистрация', 'Найти человека'", "keyboard": None}
+            return {"find": False, "text": f"Привет, {self._USERNAME}!" + '\n' +  "Мои команды: " + '\n' +  "'Регистрация', " + '\n' +  "'Найти человека', " + '\n' +  "'Справка'", "keyboard": None}
 
         elif message.upper() == self._COMMANDS[1]:
             try:
                 download_image_func(event.attachments['attach1'])
-                return {"text": "Спасибо)", "keyboard": None}
+                return {"find": False, "text": "Спасибо)", "keyboard": None}
             except KeyError:
-                return {"text": "Нет фотографии", "keyboard": None}
+                return {"find": False, "text": "Нет фотографии", "keyboard": None}
             except ValueError:
-                return {"text": "Не могу получить доступ к фотографии", "keyboard": None}
+                return {"find": False, "text": "Не могу получить доступ к фотографии", "keyboard": None}
             except IndexError:
-                return {"text": "Не могу найти лицо на фотографии", "keyboard": None}
+                return {"find": False, "text": "Не могу найти лицо на фотографии", "keyboard": None}
 
         elif message.upper() == self._COMMANDS[2]:
             try:
                 file = download_image_func_1(event.attachments['attach1'])
                 url = open_files(file)
-                return {"text":'Мне кажется, это {}'.format(url), "keyboard": None}
+                id_user = url[17:]
+
+                return {"find": True, "id":id_user, "text":'Мне кажется, это {}'.format(url), "keyboard": None}
             except KeyError:
-                return {"text": "Нет фотографии", "keyboard": None}
+                return {"find": False, "text": "Нет фотографии", "keyboard": None}
             except ValueError:
-                return {"text": "Не могу получить доступ к фотографии", "keyboard": None}
+                return {"find": False, "text": "Не могу получить доступ к фотографии", "keyboard": None}
             except IndexError:
-                return {"text": "Не могу найти лицо на фотографии", "keyboard": None}
+                return {"find": False, "text": "Не могу найти лицо на фотографии", "keyboard": None}
+
+        elif message.upper() == self._COMMANDS[3]:
+            return {"find": False, "text": "Для регистрации пришлите свою фотографию с командой 'Регистрация', фотография должна быть загружена в ВКонтакте, в любом альбоме кроме Сохраненных фотографий и приватных альбомов" + '\n' + "Для поиска фотографии пришлите фотографию человека, которого хотите найти и команду 'Найти человека'", "keyboard": None}
+
 
         else:
-            return {"text": "??????", "keyboard": None}
+            return {"find": False, "text": "??????", "keyboard": None}
 
     @staticmethod
     def _clean_all_tag_from_str(string_line):
